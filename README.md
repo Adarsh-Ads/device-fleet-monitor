@@ -2,13 +2,40 @@
 
 A small Go application that monitors a fleet of simulated devices through periodic heartbeats.
 
-## Status
+Each device sends a heartbeat to the server. The server records the latest heartbeat and dynamically determines whether the device is `ONLINE` or `OFFLINE`.
 
-Work in progress.
+## Features
 
-## Technology
+- Device registration
+- Heartbeat ingestion
+- Dynamic ONLINE/OFFLINE status
+- Fleet listing
+- Individual device lookup
+- Fleet summary
+- Concurrent device simulator
+- Automated tests
+- Concurrency-safe in-memory storage
+- Configurable simulator stop behavior
 
-- Go
-- Standard library
-- HTTP
-- JSON
+## Architecture
+
+```text
+                    ┌─────────────────────┐
+                    │   Device Simulator  │
+                    │                     │
+                    │  5 simulated devices│
+                    └──────────┬──────────┘
+                               │
+                         HTTP heartbeats
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    HTTP API Server  │
+                    │      net/http       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │     Device Store    │
+                    │  map + RWMutex      │
+                    └─────────────────────┘
